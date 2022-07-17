@@ -3,7 +3,7 @@ import { ethers } from "ethers"
 import Head from 'next/head'
 import wbtcAbi from "../abi/wbtc.json"
 import TimeStamp from "../components/TimeStamp"
-import Spinner from '../images/spinner.gif'
+import Spinner from "../components/Spinner"
 
 
 
@@ -90,7 +90,7 @@ export default function Home() {
                           <li>TimeStamp: <TimeStamp blockNumber={item.blockNumber} /></li>
                         </ul>
                 })
-              ) : null
+              ) : <Spinner />
               }
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function Home() {
                           <li>TimeStamp: <TimeStamp blockNumber={item.blockNumber} /></li>
                         </ul>
                 })
-              ) : null
+              ) : <Spinner />
               }
             </div>
           </div>
