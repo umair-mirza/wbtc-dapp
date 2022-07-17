@@ -9,7 +9,7 @@ export default function Home() {
   const [contractName, setContractName] = useState('')
   const [contractSymbol, setContractSymbol] = useState('')
   const [mintTransactions, setMintTransactions] = useState([])
-  const [timeStamp, setTimeStamp] = useState("")
+  const [burnTransactions, setBurnTransactions] = useState([])
   const [loading, setLoading] = useState(true)
 
   const contractAddress = "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
@@ -36,16 +36,20 @@ export default function Home() {
       // })
 
       //For quering historical events
-      const filter = wbtcContract.filters.Mint();
+      const mintFilter = wbtcContract.filters.Mint();
+      const burnFilter = wbtcContract.filters.Burn();
       
       //Filter the last *** number of events
-      const mintTx = await wbtcContract.queryFilter(filter, -1000000)
+      const mintTx = await wbtcContract.queryFilter(mintFilter, -1000000)
       const finalMintTx = mintTx.slice(-20)
-      console.log(finalMintTx)
+
+      const burnTx = await wbtcContract.queryFilter(burnFilter, -100000)
+      const finalBurnTx = burnTx.slice(-20)
 
       setContractName(contractName)
       setContractSymbol(contractSymbol)
       setMintTransactions(finalMintTx)
+      setBurnTransactions(finalBurnTx)
 
     setLoading(false)
     } catch(err) {
@@ -70,12 +74,28 @@ export default function Home() {
       <p>{contractSymbol}</p>
 
       <h3>Last 20 Mint Transactions</h3>
+      <br />
       { !loading ? (
         mintTransactions.map((item, i) => {
           return <ul key={i}>
                   <li>Transaction Hash: {item.transactionHash}</li>
                   <li>To Address: {item.args[0]}</li>
                   <li>Amount: {ethers.utils.formatEther(item.args.amount)}</li>
+                  <li>TimeStamp: <TimeStamp blockNumber={item.blockNumber} /></li>
+                  <br />
+                </ul>
+        })
+      ) : null
+      }
+
+      <h3>Last 20 Burn Transactions</h3>
+      <br />
+      { !loading ? (
+        burnTransactions.map((item, i) => {
+          return <ul key={i}>
+                  <li>Transaction Hash: {item.transactionHash}</li>
+                  <li>Burner Address: {item.args.burner}</li>
+                  <li>Amount: {ethers.utils.formatEther(item.args.value)}</li>
                   <li>TimeStamp: <TimeStamp blockNumber={item.blockNumber} /></li>
                   <br />
                 </ul>
