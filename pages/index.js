@@ -82,7 +82,7 @@ export default function Home() {
           <div className="md:text-xl text-gray-100 opacity-80">
             <div className="flex flex-col divide-gray-100 divide-y">
               { !loading ? (
-                mintTransactions.map((item, i) => {
+                mintTransactions.slice(0).reverse().map((item, i) => { //To make sure that the latest remains on top
                   return <ul className="mt-2" key={i}>
                           <li>Transaction Hash: {item.transactionHash}</li>
                           <li>To Address: {item.args[0]}</li>
@@ -103,7 +103,7 @@ export default function Home() {
           <div className="md:text-xl text-gray-100 opacity-80">
             <div className="flex flex-col divide-gray-100 divide-y">
               { !loading ? (
-                burnTransactions.map((item, i) => {
+                burnTransactions.slice(0).reverse().map((item, i) => {
                   return <ul className="mt-2" key={i}>
                           <li>Transaction Hash: {item.transactionHash}</li>
                           <li>Burner Address: {item.args.burner}</li>
