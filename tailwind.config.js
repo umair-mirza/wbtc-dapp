@@ -5,7 +5,14 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "font-family": ['VT323', "monospace"]
+      },
+      colors: {
+        "newYellow": "#fed331"
+      }
+    },
   },
   plugins: [],
 }

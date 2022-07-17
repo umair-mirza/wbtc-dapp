@@ -3,6 +3,8 @@ import { ethers } from "ethers"
 import Head from 'next/head'
 import wbtcAbi from "../abi/wbtc.json"
 import TimeStamp from "../components/TimeStamp"
+import Spinner from '../images/spinner.gif'
+
 
 
 export default function Home() {
@@ -61,48 +63,61 @@ export default function Home() {
 
   return (
 
-    <div>
+    <>
       <Head>
         <title>Mint and Burn Data</title>
         <meta name="description" content="Minting and Burning data of Ethereum based currencies" />
         <link rel="icon" href="/favicon.ico" />
+        
       </Head>
 
-      <h1>Mint and Burn Data</h1>
+      <h1 className="text-4xl md:text-6xl text-center mt-10 text-newYellow">Wrapped BTC - WBTC</h1>
+      <h2 className="text-2xl md:text-3xl text-center mt-6 text-gray-100">Mint and Burn Data</h2>
 
-      <p>{contractName}</p>
-      <p>{contractSymbol}</p>
+      <div className="grid lg:grid-cols-2 gap-6 mt-6 mx-4 mb-6">
+        <div className="flex flex-col items-center border-opacity-0 rounded-lg shadow-2xl shadow-slate-700">
+          <div className="mb-4 text-newYellow text-xl md:text-3xl">
+            <h3>Last 20 Mint Transactions</h3>
+          </div>
+          <div className="md:text-xl text-gray-100 opacity-80">
+            <div className="flex flex-col divide-gray-100 divide-y">
+              { !loading ? (
+                mintTransactions.map((item, i) => {
+                  return <ul className="mt-2" key={i}>
+                          <li>Transaction Hash: {item.transactionHash}</li>
+                          <li>To Address: {item.args[0]}</li>
+                          <li>Amount: {ethers.utils.formatEther(item.args.amount)}</li>
+                          <li>TimeStamp: <TimeStamp blockNumber={item.blockNumber} /></li>
+                        </ul>
+                })
+              ) : null
+              }
+            </div>
+          </div>
+        </div>
 
-      <h3>Last 20 Mint Transactions</h3>
-      <br />
-      { !loading ? (
-        mintTransactions.map((item, i) => {
-          return <ul key={i}>
-                  <li>Transaction Hash: {item.transactionHash}</li>
-                  <li>To Address: {item.args[0]}</li>
-                  <li>Amount: {ethers.utils.formatEther(item.args.amount)}</li>
-                  <li>TimeStamp: <TimeStamp blockNumber={item.blockNumber} /></li>
-                  <br />
-                </ul>
-        })
-      ) : null
-      }
-
-      <h3>Last 20 Burn Transactions</h3>
-      <br />
-      { !loading ? (
-        burnTransactions.map((item, i) => {
-          return <ul key={i}>
-                  <li>Transaction Hash: {item.transactionHash}</li>
-                  <li>Burner Address: {item.args.burner}</li>
-                  <li>Amount: {ethers.utils.formatEther(item.args.value)}</li>
-                  <li>TimeStamp: <TimeStamp blockNumber={item.blockNumber} /></li>
-                  <br />
-                </ul>
-        })
-      ) : null
-      }
+        <div className="flex flex-col items-center border-opacity-0 rounded-lg shadow-2xl shadow-slate-700">
+          <div className="mb-4 text-newYellow text-xl md:text-3xl">
+            <h3>Last 20 Burn Transactions</h3>
+          </div>
+          <div className="md:text-xl text-gray-100 opacity-80">
+            <div className="flex flex-col divide-gray-100 divide-y">
+              { !loading ? (
+                burnTransactions.map((item, i) => {
+                  return <ul className="mt-2" key={i}>
+                          <li>Transaction Hash: {item.transactionHash}</li>
+                          <li>Burner Address: {item.args.burner}</li>
+                          <li>Amount: {ethers.utils.formatEther(item.args.value)}</li>
+                          <li>TimeStamp: <TimeStamp blockNumber={item.blockNumber} /></li>
+                        </ul>
+                })
+              ) : null
+              }
+            </div>
+          </div>
+        </div>
+      </div>
       
-    </div>
+    </>
   )
 }

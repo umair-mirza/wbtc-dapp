@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react"
 import { ethers } from "ethers"
+import moment from 'moment'
 
 
 export default function TimeStamp({blockNumber}) {
@@ -16,7 +17,7 @@ export default function TimeStamp({blockNumber}) {
     const getTime = async (blockNumber) => {
         //brackets are important
         const result = (await provider.getBlock(blockNumber)).timestamp
-        setTimeStamp(result)
+        setTimeStamp(moment.unix(result).toString())
       }
 
     return (
